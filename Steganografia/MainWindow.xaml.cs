@@ -137,7 +137,7 @@ namespace Steganografia
             
             writeableBitmap.CopyPixels(pixels, stride, 0);
 
-            for(int i = 0; i < 16000; i++)
+            for(int i = 0; i < pixels.Length; i++)
             {
                 if((pixels[i] & 1) == 1)
                 {
@@ -189,11 +189,9 @@ namespace Steganografia
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            byte[] tab = ConvertToByteArray(InputTextBox.Text.Length + "<!>" + InputTextBox.Text, Encoding.UTF8);
-            Console.WriteLine(tab.Length);
-            Console.WriteLine(ToBinary(tab));
-            Console.WriteLine(Encoding.UTF8.GetString(tab));
-                
+            InputTextBox.Clear();
+            OutputTextBox.Clear();
+            
 
         }
 
