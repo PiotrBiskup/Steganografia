@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,13 +37,12 @@ namespace Steganografia
 
             if (ofd.ShowDialog() == true)
             {
-                Console.WriteLine(ofd.FileName);
-                ImageInButton.Source = new BitmapImage(new Uri(ofd.FileName));
-                
+                bitmap = new BitmapImage(new Uri(ofd.FileName));
+                ImageInButton.Source = bitmap;
+                checkIfEncryptButtonEnable();
+                charsToEncryptInImageTextBlock.Text = "Max amount of chars possible to encrypt: " + ((bitmap.PixelHeight * bitmap.PixelWidth) / 2);
             }
-
-            
-
+       
         }
 
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
@@ -63,6 +63,39 @@ namespace Steganografia
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void InputTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            checkIfEncryptButtonEnable();
+            charsToEncryptInMessageTextBlock.Text = "Amount of chars: " + InputTextBox.Text.Length;
+        }
+
+        private void loadTextButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.DefaultExt = ".txt";
+            ofd.Filter = "Text documents (.txt)|*.txt";
+
+            if (ofd.ShowDialog() == true)
+            {
+                InputTextBox.Text = File.ReadAllText(ofd.FileName);
+            }
+        }
+
+        private void checkIfEncryptButtonEnable()
+        {
+            if (bitmap != null && InputTextBox.Text.Length > 0)
+            {
+                if ((bitmap.PixelHeight * bitmap.PixelWidth) / 2 > InputTextBox.Text.Length)
+                {
+                    EncryptButton.IsEnabled = true;
+                }
+                else EncryptButton.IsEnabled = false;
+            }
+            else EncryptButton.IsEnabled = false;
+
+            if (bitmap != null) DecryptButton.IsEnabled = true; else DecryptButton.IsEnabled = false;
         }
     }
 }

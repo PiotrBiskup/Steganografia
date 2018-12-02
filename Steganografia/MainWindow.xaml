@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Steganografia"
         mc:Ignorable="d"
-        Title="Steganografia" Height="465" Width="800">
+        Title="Steganography" Height="520" Width="800">
     <Grid>
         <Border Padding="10">
             <StackPanel>
 
-                <TextBlock Text="Steganografia" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+                <TextBlock Text="Steganography" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -18,18 +18,20 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Margin=" 20 20 20 20">
-                        <TextBlock Text="Load image from file: " HorizontalAlignment="Center"/>
-                        <Button x:Name="ImageButton" Width="150" Height="150" Click="ImageButton_Click">
+                        <TextBlock Margin="0 0 0 5" Text="Load image from file: " HorizontalAlignment="Center"/>
+                        <Button x:Name="ImageButton" Width="160" Height="160" Click="ImageButton_Click">
                             <StackPanel>
                                 <Image x:Name="ImageInButton"/>
                             </StackPanel>
                         </Button>
-                        
+                        <TextBlock HorizontalAlignment="Center" x:Name="charsToEncryptInImageTextBlock" Margin="0 5 0 0" Text="Max amount of chars possible to encrypt: "/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Margin=" 20 20 20 20">
-                        <TextBlock Text="Type the message you want to encrypt in an image:"/>
-                        <TextBox x:Name="InputTextBox" Height="140" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                        <TextBlock Margin="0 0 0 5" Text="Type the message you want to encrypt in an image:"/>
+                        <TextBox TextChanged="InputTextBox_TextChanged" x:Name="InputTextBox" Height="140" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                        <Button x:Name="loadTextButton" Click="loadTextButton_Click" Content="Load text from file"/>
+                        <TextBlock x:Name="charsToEncryptInMessageTextBlock" Margin="0 5 0 0" Text="Amount of chars: "/>
                     </StackPanel>
 
                 </Grid>
@@ -43,11 +45,11 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Margin=" 20 20 20 20">
-                        <Button x:Name="EncryptButton" Content="Encrypt and save to file" Click="EncryptButton_Click"/>
+                        <Button IsEnabled="False" x:Name="EncryptButton" Content="Encrypt and save to file" Click="EncryptButton_Click"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Margin=" 20 20 20 20">
-                        <Button x:Name="DecryptButton" Content="Decrypt" Click="DecryptButton_Click"/>
+                        <Button IsEnabled="False" x:Name="DecryptButton" Content="Decrypt" Click="DecryptButton_Click"/>
                     </StackPanel>
                     
                     <StackPanel Grid.Column="2" Margin=" 20 20 20 20">
