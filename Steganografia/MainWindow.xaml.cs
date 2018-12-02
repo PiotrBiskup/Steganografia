@@ -49,7 +49,8 @@ namespace Steganografia
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
         {
             byte[] inputByteArray = ConvertToByteArray(InputTextBox.Text.Length + "<!>" + InputTextBox.Text, Encoding.UTF8);
-           
+            Console.WriteLine(InputTextBox.Text.Length + "<!>" + InputTextBox.Text);
+            Console.WriteLine(inputByteArray.Length);
             WriteableBitmap writeableBitmap = new WriteableBitmap(bitmap);
 
             int width = writeableBitmap.PixelWidth;
@@ -86,7 +87,7 @@ namespace Steganografia
 
             Int32Rect rect = new Int32Rect(0, 0, width, height);
             writeableBitmap.WritePixels(rect, pixels, stride, 0);
-            Console.WriteLine(Encoding.UTF8.GetString(inputByteArray));
+            
             ImageInButton.Source = writeableBitmap;
 
             SaveFileDialog sfd = new SaveFileDialog();
@@ -94,7 +95,6 @@ namespace Steganografia
 
             if (sfd.ShowDialog() == true)
             {
-                Console.WriteLine(sfd.FileName);
 
                 if (sfd.FileName.ToLower().Contains("png"))
                 {
@@ -137,7 +137,7 @@ namespace Steganografia
             
             writeableBitmap.CopyPixels(pixels, stride, 0);
 
-            for(int i = 0; i < 20000; i++)
+            for(int i = 0; i < 16000; i++)
             {
                 if((pixels[i] & 1) == 1)
                 {
@@ -152,7 +152,8 @@ namespace Steganografia
             byte[] temptab = BinaryStringToByteArray(output);
             
             String outputString = Encoding.UTF8.GetString(temptab);
-            Console.WriteLine(outputString);
+            Console.WriteLine("wynik: " + outputString);
+            
             int index = outputString.IndexOf("<!>");
             if(index < 0)
             {
@@ -164,6 +165,9 @@ namespace Steganografia
                 String sLenght = outputString.Substring(0, index);
                 int iLenght = 0;
                 int.TryParse(sLenght, out iLenght);
+
+                String result = outputString.Substring(index + 3, iLenght);
+                OutputTextBox.Text = result;
             }
             
             
