@@ -36,12 +36,12 @@ namespace Steganografia
 
             if (ofd.ShowDialog() == true)
             {
-                bitmap = new BitmapImage();
-                bitmap.UriSource = new Uri(ofd.FileName);
+                Console.WriteLine(ofd.FileName);
+                ImageInButton.Source = new BitmapImage(new Uri(ofd.FileName));
                 
             }
 
-            TestImg.Source = bitmap;
+            
 
         }
 

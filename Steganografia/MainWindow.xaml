@@ -18,13 +18,13 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Margin=" 20 20 20 20">
-                        <Button Background="Aquamarine" x:Name="ImageButton" Width="150" Height="150" Click="ImageButton_Click">
+                        <TextBlock Text="Load image from file: " HorizontalAlignment="Center"/>
+                        <Button x:Name="ImageButton" Width="150" Height="150" Click="ImageButton_Click">
                             <StackPanel>
-                                <TextBlock x:Name="TextInButton" Text="Load image from file"/>
                                 <Image x:Name="ImageInButton"/>
                             </StackPanel>
                         </Button>
-                        <Image x:Name="TestImg"/>
+                        
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Margin=" 20 20 20 20">
