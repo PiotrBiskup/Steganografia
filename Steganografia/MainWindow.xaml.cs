@@ -88,11 +88,35 @@ namespace Steganografia
             ImageInButton.Source = writeableBitmap;
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "PNG|*.PNG|GIF|*.GIF|BMP|*.BMP|All files (*.*)|*.*";
+            sfd.Filter = "PNG|*.PNG|BMP|*.BMP|All files (*.*)|*.*";
 
             if (sfd.ShowDialog() == true)
             {
-                File.WriteAllBytes(sfd.FileName, pixels);
+                Console.WriteLine(sfd.FileName);
+
+                if (sfd.FileName.ToLower().Contains("png"))
+                {
+                    using (FileStream stream5 = new FileStream(sfd.FileName, FileMode.Create))
+                    {
+                        PngBitmapEncoder encoder5 = new PngBitmapEncoder();
+                        encoder5.Frames.Add(BitmapFrame.Create(writeableBitmap));
+                        encoder5.Save(stream5);
+
+                        
+                    }
+
+
+                } else if (sfd.FileName.ToLower().Contains("bmp"))
+                    {
+
+                        using (FileStream stream5 = new FileStream(sfd.FileName, FileMode.Create))
+                        {
+                            BmpBitmapEncoder encoder5 = new BmpBitmapEncoder();
+                            encoder5.Frames.Add(BitmapFrame.Create(writeableBitmap));
+                            encoder5.Save(stream5);
+                        }
+                } 
+                
             }
 
 
