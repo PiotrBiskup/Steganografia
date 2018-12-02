@@ -1,0 +1,71 @@
+﻿<Window x:Class="Steganografia.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Steganografia"
+        mc:Ignorable="d"
+        Title="Steganografia" Height="465" Width="800">
+    <Grid>
+        <Border Padding="10">
+            <StackPanel>
+
+                <TextBlock Text="Steganografia" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin=" 20 20 20 20">
+                        <Button Background="Aquamarine" x:Name="ImageButton" Width="150" Height="150" Click="ImageButton_Click">
+                            <StackPanel>
+                                <TextBlock x:Name="TextInButton" Text="Load image from file"/>
+                                <Image x:Name="ImageInButton"/>
+                            </StackPanel>
+                        </Button>
+                        <Image x:Name="TestImg"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin=" 20 20 20 20">
+                        <TextBlock Text="Type the message you want to encrypt in an image:"/>
+                        <TextBox x:Name="InputTextBox" Height="140" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                    </StackPanel>
+
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin=" 20 20 20 20">
+                        <Button x:Name="EncryptButton" Content="Encrypt and save to file" Click="EncryptButton_Click"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin=" 20 20 20 20">
+                        <Button x:Name="DecryptButton" Content="Decrypt" Click="DecryptButton_Click"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="2" Margin=" 20 20 20 20">
+                        <Button x:Name="SaveOutputButton" Content="Save output to file" Click="SaveOutputButton_Click"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Margin=" 20 20 20 20">
+                        <Button x:Name="ResetButton" Content="Reset" Background="Red" Click="ResetButton_Click"/>
+                    </StackPanel>
+                    
+                </Grid>
+                <TextBlock Text="Output:" Margin="0 0 0 10" FontWeight="Bold"/>
+                <TextBox x:Name="OutputTextBox" IsReadOnly="True" Height="100" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+
+
+
+            </StackPanel>
+      </Border>  
+
+    </Grid>
+</Window>
