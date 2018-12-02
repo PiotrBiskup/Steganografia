@@ -54,7 +54,7 @@ namespace Steganografia
 
             int width = writeableBitmap.PixelWidth;
             int height = writeableBitmap.PixelHeight;
-            var stride = width * ((writeableBitmap.Format.BitsPerPixel) / 8);
+            var stride = width * 4;
 
             var pixels = new byte[height * stride];
 
@@ -63,7 +63,7 @@ namespace Steganografia
             int imgByte = 0;
             for(int i = 0; i < inputByteArray.Length; i++)
             {
-                for(int j = 7; j <= 0; j--)
+                for(int j = 7; j >= 0; j--)
                 {   
                     Boolean bit = (inputByteArray[i] & (1 << j)) != 0;
 
@@ -81,6 +81,8 @@ namespace Steganografia
 
                 }
             }
+
+
 
             Int32Rect rect = new Int32Rect(0, 0, width, height);
             writeableBitmap.WritePixels(rect, pixels, stride, 0);
@@ -124,6 +126,48 @@ namespace Steganografia
 
         private void DecryptButton_Click(object sender, RoutedEventArgs e)
         {
+            String output = "";
+            WriteableBitmap writeableBitmap = new WriteableBitmap(bitmap);
+
+            int width = writeableBitmap.PixelWidth;
+            int height = writeableBitmap.PixelHeight;
+            var stride = width * 4;
+
+            var pixels = new byte[height * stride];
+            
+            writeableBitmap.CopyPixels(pixels, stride, 0);
+
+            for(int i = 0; i < 20000; i++)
+            {
+                if((pixels[i] & 1) == 1)
+                {
+                    output += "1";
+                } else
+                {
+                    output += "0";
+                }
+            }
+
+            
+            byte[] temptab = BinaryStringToByteArray(output);
+            
+            String outputString = Encoding.UTF8.GetString(temptab);
+            Console.WriteLine(outputString);
+            int index = outputString.IndexOf("<!>");
+            if(index < 0)
+            {
+                MessageBoxResult m = MessageBox.Show("This image has no hidden message!");
+
+            }
+            else
+            {
+                String sLenght = outputString.Substring(0, index);
+                int iLenght = 0;
+                int.TryParse(sLenght, out iLenght);
+            }
+            
+            
+
 
         }
 
@@ -141,7 +185,7 @@ namespace Steganografia
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            byte[] tab = ConvertToByteArray("ąa", Encoding.UTF8);
+            byte[] tab = ConvertToByteArray(InputTextBox.Text.Length + "<!>" + InputTextBox.Text, Encoding.UTF8);
             Console.WriteLine(tab.Length);
             Console.WriteLine(ToBinary(tab));
             Console.WriteLine(Encoding.UTF8.GetString(tab));
