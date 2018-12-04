@@ -27,6 +27,7 @@ namespace Steganografia
         public MainWindow()
         {
             InitializeComponent();
+            teoriaTextBlock.Text = "Szyforwanie wiadomości odbywa się podstawie zmiany LSB każdej składowej piksela na jeden bit tekstu jawnego. Zmiana wartości składowych pikseli o 1 sprawia, że nie jesteśmy w stanie zauważyć zmian w obrazie.\n\nZasada działania:\nWczytujemy obraz (dostępne rozszerzenia to png, jpeg, bmp) następnie wpisujemy tekst jawny. Poniżej wczytanego obrazu mamy pokazaną maksymalną ilość znaków możliwą do zaszyfrowania w danym obrazie. Pod tekstem jawnym też mamy informację o ilości znaków. Następnie szyfrujemy za pomocą przycisku Encrypt. Automatycznie przechodzimy do okna zapisu obrazu z zaszyfrowaną wiadomością.\nAby odczytać zaszyfrowaną wiadomość wczytujemy zdjęcie i wciskamy Decrypt. Odszyfrowaną wiadomość możemy zapisać do pliku txt.";
         }
 
         private void ImageButton_Click(object sender, RoutedEventArgs e)
@@ -38,8 +39,10 @@ namespace Steganografia
 
             if (ofd.ShowDialog() == true)
             {
+
                 bitmap = new BitmapImage(new Uri(ofd.FileName));
                 ImageInButton.Source = bitmap;
+
                 checkIfEncryptButtonEnable();
                 charsToEncryptInImageTextBlock.Text = "Max amount of chars possible to encrypt: " + ((bitmap.PixelHeight * bitmap.PixelWidth) / 4);
             }
@@ -84,11 +87,43 @@ namespace Steganografia
             }
 
 
+            /* String output = "";
+             for (int i = 0; i < pixels.Length; i++)
+             {
+                 if ((pixels[i] & 1) == 1)
+                 {
+                     output += "1";
+                 }
+                 else
+                 {
+                     output += "0";
+                 }
+             }
+             byte[] temptab = BinaryStringToByteArray(output);
 
+             String outputString = Encoding.UTF8.GetString(temptab);
+             Console.WriteLine("wynik: " + outputString);*/
+
+            /*
             Int32Rect rect = new Int32Rect(0, 0, width, height);
             writeableBitmap.WritePixels(rect, pixels, stride, 0);
             
             ImageInButton.Source = writeableBitmap;
+
+
+            bitmap = ConvertWriteableBitmapToBitmapImage(writeableBitmap);*/
+
+
+            writeableBitmap.WritePixels(new Int32Rect(0,0,writeableBitmap.PixelWidth,writeableBitmap.PixelHeight), 
+                                        pixels, writeableBitmap.PixelWidth * writeableBitmap.Format.BitsPerPixel / 8, 0);
+
+            ImageInButton.Source = writeableBitmap;
+
+
+            bitmap = ConvertWriteableBitmapToBitmapImage(writeableBitmap);
+
+
+
 
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "PNG|*.PNG|BMP|*.BMP|All files (*.*)|*.*";
@@ -137,7 +172,26 @@ namespace Steganografia
             
             writeableBitmap.CopyPixels(pixels, stride, 0);
 
+            /*byte[] message = new byte[(pixels.Length / 8)];
+
+            int mIndex = 0;
+            int counter = 7;
             for(int i = 0; i < pixels.Length; i++)
+            {
+                if (counter < 0)
+                {
+                    counter = 7;
+                    mIndex++;
+                }
+                if ((pixels[i] & 1) == 1)
+                {
+                    message[mIndex] += ((Byte)((int)(Math.Pow(2, counter))));
+                }
+
+                counter--;
+            }*/
+
+            for(int i = 0; i < 20000; i++)
             {
                 if((pixels[i] & 1) == 1)
                 {
@@ -255,5 +309,24 @@ namespace Steganografia
 
             return bytes;
         }
+
+        public BitmapImage ConvertWriteableBitmapToBitmapImage(WriteableBitmap wbm)
+        {
+            BitmapImage bmImage = new BitmapImage();
+            using (MemoryStream stream = new MemoryStream())
+            {
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(wbm));
+                encoder.Save(stream);
+                bmImage.BeginInit();
+                bmImage.CacheOption = BitmapCacheOption.OnLoad;
+                bmImage.StreamSource = stream;
+                bmImage.EndInit();
+                bmImage.Freeze();
+            }
+            return bmImage;
+        }
+
+        
     }
 }
